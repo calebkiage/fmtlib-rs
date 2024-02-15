@@ -1,0 +1,16 @@
+[package]
+name = "fmtlib-rs"
+version = "0.1.0"
+authors = ["Caleb Kiage <caleb.kiage@gmail.com>"]
+
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+cxx = { workspace = true }
+fmtlib-proc-macros = { workspace = true }
+thiserror = { workspace = true }
+
+[build-dependencies]
+cxx-build = { workspace = true }

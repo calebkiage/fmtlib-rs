@@ -1,0 +1,16 @@
+[package]
+name = "fmtlib-proc-macros"
+version = "0.1.0"
+authors = ["Caleb Kiage <caleb.kiage@gmail.com>"]
+
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = { workspace = true }
+quote = { workspace = true }
+syn = { workspace = true, features = ["clone-impls", "full", "parsing", "printing", "proc-macro"]}
