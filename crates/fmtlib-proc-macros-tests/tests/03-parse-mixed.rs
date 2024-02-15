@@ -1,4 +1,4 @@
-use fmtlib_arg::args;
+use fmtlib_proc_macros::args;
 use fmtlib_rs::fmt::{Arg, Value};
 
 fn main() {

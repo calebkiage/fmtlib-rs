@@ -10,6 +10,7 @@ publish = false
 [dependencies]
 cxx = { workspace = true }
 fmtlib-proc-macros = { workspace = true }
+quote = { workspace = true }
 thiserror = { workspace = true }
 
 [build-dependencies]

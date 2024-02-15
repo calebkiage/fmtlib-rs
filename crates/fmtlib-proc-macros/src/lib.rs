@@ -35,7 +35,7 @@ impl ArgMacroInput {
 
 impl ToTokens for ArgMacroInput {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        let ty = quote! {$crate::fmt::Arg};
+        let ty = quote! {Arg};
         match self {
             ArgMacroInput::Pos(value) => {
                 let arg = expand_value(value);
@@ -248,7 +248,7 @@ pub fn args(input: TokenStream) -> TokenStream {
         }
     } else {
         quote! {
-            [] as [::fmtlib_rs::fmt::Arg; 0]
+            [] as [Arg; 0]
         }
     }
     .into()

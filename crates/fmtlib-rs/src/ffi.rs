@@ -43,29 +43,28 @@ pub mod fmt {
 }
 
 #[cfg(test)]
-mod tests {
+mod ffi_tests {
     use std::ffi::CStr;
 
     use super::*;
 
     #[test]
     fn test_name() {
-        let mut args =
-            fmtlib_arg::args!(String::from("string"), "static str", 12, "named": "named arg");
+        let mut args = fmtlib_proc_macros::args!(String::from("string"), "static str", 12, "named": "named arg");
         let fmt = CStr::from_bytes_with_nul(b"test '{}' '{}' '{}' '{named}'\0").unwrap();
         match unsafe { fmt::format(fmt.as_ptr(), args.as_mut_slice()) } {
             Ok(ref v) => {
                 assert_eq!(v, "test 'string' 'static str' '12' 'named arg'");
             }
-            Err(e) => panic!("error from cpp: {e}"),
+            Err(e) => panic!("error from fmtlib: {e}"),
         }
-        let mut args = fmtlib_arg::args!(1, 3, b: 2);
-        let fmt = CStr::from_bytes_with_nul(b"test '{}' '{b}' '{}'\0").unwrap();
+        let mut args = fmtlib_proc_macros::args!(1, 3, b: 2);
+        let fmt = CStr::from_bytes_with_nul(b"test '{0}' '{b}' '{1}'\0").unwrap();
         match unsafe { fmt::format(fmt.as_ptr(), args.as_mut_slice()) } {
             Ok(ref v) => {
                 assert_eq!(v, "test '1' '2' '3'");
             }
-            Err(e) => panic!("error from cpp: {e}"),
+            Err(e) => panic!("error from fmtlib: {e}"),
         }
     }
 }
