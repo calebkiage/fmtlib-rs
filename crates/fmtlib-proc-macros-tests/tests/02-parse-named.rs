@@ -1,9 +1,9 @@
-use fmtlib_proc_macros::args;
+use fmtlib_proc_macros::format_args;
 use fmtlib_rs::fmt::{Arg, Value};
 
 fn main() {
     // Args
-    let a = args!("a": "v", 'b': "v", c: "v", 10: "v");
+    let a = format_args!("a": "v", 'b': "v", c: "v", 10: "v");
     assert_eq!(a.len(), 4);
     assert!(
         matches!(&a[0], Arg::Named(k, Value::String(v)) if k.as_c_str() == unsafe{std::ffi::CStr::from_bytes_with_nul_unchecked(b"a\0")} && v == "v")

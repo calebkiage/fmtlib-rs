@@ -1,4 +1,4 @@
-use fmtlib_proc_macros::args;
+use fmtlib_proc_macros::format_args;
 use fmtlib_rs::fmt::{Arg, Value};
 
 fn string() -> &'static str {
@@ -7,7 +7,7 @@ fn string() -> &'static str {
 
 fn main() {
     // Args
-    let a = args!(
+    let a = format_args!(
         "a",
         'b',
         3,

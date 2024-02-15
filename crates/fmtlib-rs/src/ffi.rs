@@ -50,7 +50,7 @@ mod ffi_tests {
 
     #[test]
     fn test_name() {
-        let mut args = fmtlib_proc_macros::args!(String::from("string"), "static str", 12, "named": "named arg");
+        let mut args = fmtlib_proc_macros::format_args!(String::from("string"), "static str", 12, "named": "named arg");
         let fmt = CStr::from_bytes_with_nul(b"test '{}' '{}' '{}' '{named}'\0").unwrap();
         match unsafe { fmt::format(fmt.as_ptr(), args.as_mut_slice()) } {
             Ok(ref v) => {
@@ -58,7 +58,7 @@ mod ffi_tests {
             }
             Err(e) => panic!("error from fmtlib: {e}"),
         }
-        let mut args = fmtlib_proc_macros::args!(1, 3, b: 2);
+        let mut args = fmtlib_proc_macros::format_args!(1, 3, b: 2);
         let fmt = CStr::from_bytes_with_nul(b"test '{0}' '{b}' '{1}'\0").unwrap();
         match unsafe { fmt::format(fmt.as_ptr(), args.as_mut_slice()) } {
             Ok(ref v) => {

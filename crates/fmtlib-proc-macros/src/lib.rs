@@ -181,56 +181,25 @@ fn expand_literal(literal: &Lit) -> proc_macro2::TokenStream {
 }
 
 struct ArgsMacroInput {
-    pos: Punctuated<ArgMacroInput, Token![,]>,
-    named: Punctuated<ArgMacroInput, Token![,]>,
+    args: Punctuated<ArgMacroInput, Token![,]>,
 }
 
 impl Parse for ArgsMacroInput {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        let mut pos = Punctuated::new();
-        let mut named = Punctuated::new();
-        loop {
-            if input.is_empty() {
-                break;
-            }
-            let value = ArgMacroInput::parse_alternate(input)?;
-            let is_pos = match value {
-                ArgMacroInput::Pos(_) => {
-                    pos.push_value(value);
-                    true
-                }
-                ArgMacroInput::Named(_, _) => {
-                    named.push_value(value);
-                    false
-                }
-            };
-            if input.is_empty() {
-                break;
-            }
-            let punct = input.parse()?;
-            if is_pos {
-                pos.push_punct(punct);
-            } else {
-                named.push_punct(punct);
-            }
-        }
-        Ok(Self { pos, named })
+        let args = Punctuated::parse_terminated_with(input, ArgMacroInput::parse_alternate)?;
+        Ok(Self { args })
     }
 }
 
-/// Used by the format! macro to create an array of args.
+/// Used by the format! macro to create formatting args.
 #[proc_macro]
-pub fn args(input: TokenStream) -> TokenStream {
+pub fn format_args(input: TokenStream) -> TokenStream {
     let parsed = parse_macro_input!(input as ArgsMacroInput);
     let mut out_stream = proc_macro2::TokenStream::new();
-    let count = parsed.pos.len() + parsed.named.len();
-    out_stream.append_terminated(
-        parsed.pos,
-        proc_macro2::Punct::new(',', proc_macro2::Spacing::Alone),
-    );
+    let count = parsed.args.len();
     // named args should be last.
     out_stream.append_separated(
-        parsed.named,
+        parsed.args,
         proc_macro2::Punct::new(',', proc_macro2::Spacing::Alone),
     );
 
