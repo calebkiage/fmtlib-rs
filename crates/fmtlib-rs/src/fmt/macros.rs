@@ -6,40 +6,53 @@
 ///
 /// # Examples
 /// ```
-/// use fmtlib_rs::fmt::format;
+/// # use fmtlib_rs::fmt::rt_format;
 ///
 /// // A plain string is printed out as is.
-/// let result = format!("Hello");
+/// let result = rt_format!("Hello");
 /// assert_eq!(result.unwrap(), "Hello");
+/// ```
+///
+///```
+/// # use fmtlib_rs::fmt::rt_format;
 ///
 /// // An interpolated string.
-/// let result = format!("{} {}", "hello", "world");
+/// let result = rt_format!("{} {}", "hello", "world");
 /// assert_eq!(result.unwrap(), "hello world");
+/// ```
+///
+/// ```
+/// # use fmtlib_rs::fmt::rt_format;
 ///
 /// // Positional arguments
-/// let result = format!("{0} {0} {1}", 12, 20);
+/// let result = rt_format!("{0} {0} {1}", 12, 20);
 /// assert_eq!(result.unwrap(), "12 12 20");
+/// ```
+///
+/// ```
+/// # use fmtlib_rs::fmt::rt_format;
 ///
 /// // Named arguments
-/// let result = format!("{a} {a} {b}", a: 12, b: 20);
+/// let result = rt_format!("{a} {a} {b}", a: 12, b: 20);
 /// assert_eq!(result.unwrap(), "12 12 20");
+/// ```
+///
+/// ```
+/// # use fmtlib_rs::fmt::rt_format;
 ///
 /// // Named and positional
-/// let result = format!("{} {0} {b}", 12, b: 20);
+/// let result = rt_format!("{0} {0} {b}", 12, b: 20);
 /// assert_eq!(result.unwrap(), "12 12 20");
 /// ```
 ///
 /// # Known issues
-/// The underlying library doesn't allow mixing automatic & manual arg
+/// The underlying C++ library doesn't allow mixing automatic & manual arg
 /// indexing. What this means is that one has to decide whether to use
-/// `{}` or `{<index>}` in a template string.
-/// Another issue is that one can't have a named argument appear before an
-/// automatically indexed positional argument. If a named argument is used,
-/// all positional arguments in the template after the named argument must
-/// be indexed.
+/// `{}` or `{<index>}` in a template string. Named arguments are considered
+/// to be manually indexed.
 ///
 /// For example:
-/// ```no_run
+/// ```ignore
 /// // The following format strings will not be interpolated.
 ///
 /// // mixing automatic and manual indexing is not supported
@@ -48,25 +61,27 @@
 /// // having an automatically indexed placeholder after a named argument is
 /// // not supported either.
 /// "{} {named} {}" // To fix it, use manual indexing after the
-///                 // named argument "{} {named} {2}"
+///                 // named argument "{0} {named} {1}"
 /// ```
 #[macro_export]
-macro_rules! format {
-    ($msg:literal) => {Ok::<_, $crate::fmt::errors::Error>(::std::format!("{}", $msg))};
+macro_rules! rt_format {
+    ($msg:literal) => {Ok::<_, $crate::fmt::errors::Error>($msg.to_string())};
+    ($msg:expr) => {Ok::<_, $crate::fmt::errors::Error>($msg.to_string())};
     ($msg:expr, $args:expr) => {unsafe {
         use $crate::fmt::Arg;
         let msg = std::ffi::CString::new($msg).expect("cannot construct format string. invalid byte source");
-        $crate::ffi::fmt::format(msg.as_ptr(), $args.as_mut_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
+        let args = ::fmtlib_proc_macros::rt_format_args!($args);
+        $crate::ffi::fmt::format(msg.as_ptr(), args.as_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
     }};
     ($msg:tt, $($args:tt)+) => {unsafe {
         use $crate::fmt::Arg;
         let msg = std::ffi::CString::new($msg).expect("cannot construct format string. invalid byte source");
-        let mut args = ::fmtlib_proc_macros::format_args!($($args)+);
-        $crate::ffi::fmt::format(msg.as_ptr(), args.as_mut_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
+        let args = ::fmtlib_proc_macros::rt_format_args!($($args)+);
+        $crate::ffi::fmt::format(msg.as_ptr(), args.as_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
     }};
 }
 
-pub use format;
+pub use rt_format;
 
 #[cfg(test)]
 mod tests {
@@ -74,13 +89,13 @@ mod tests {
 
     #[test]
     fn test_format() {
-        let x = format!("test");
+        let x = rt_format!("test");
         assert_eq!(x.expect("formatting failed"), "test");
-        let x = format!("test {} {named}", "arg0", "named": "named arg" );
+        let x = rt_format!("test {0} {named}", "arg0", "named": "named arg" );
         assert_eq!(x.expect("formatting failed"), "test arg0 named arg");
-        let x = format!("{a} {a} {b}", a: 12, b: 20 );
+        let x = rt_format!("{a} {a} {b}", a: 12, b: 20 );
         assert_eq!(x.expect("formatting failed"), "12 12 20");
-        let x = format!("{} {b} {0} {2}", 12, b: 20, 21 );
+        let x = rt_format!("{0} {b} {0} {2}", 12, b: 20, 21 );
         assert_eq!(x.expect("formatting failed"), "12 20 12 21");
     }
 }

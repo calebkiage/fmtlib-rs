@@ -5,5 +5,5 @@ mod macros;
 mod value;
 
 pub use arg::*;
-pub use macros::format;
+pub use macros::rt_format;
 pub use value::*;

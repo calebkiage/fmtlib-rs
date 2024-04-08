@@ -35,10 +35,8 @@ pub mod fmt {
         include!("fmtlib-rs/include/shim.h");
 
         /// Format a string using [fmtlib](https://fmt.dev)
-        /// Due to [issue #3817](https://github.com/fmtlib/fmt/issues/3817)
-        /// with the library, named arguments should come last
         #[allow(dead_code)]
-        pub(crate) unsafe fn format(fmt: *const c_char, args: &mut [Arg]) -> Result<String>;
+        pub(crate) unsafe fn format(fmt: *const c_char, args: &[Arg]) -> Result<String>;
     }
 }
 
@@ -50,7 +48,7 @@ mod ffi_tests {
 
     #[test]
     fn test_name() {
-        let mut args = fmtlib_proc_macros::format_args!(String::from("string"), "static str", 12, "named": "named arg");
+        let mut args = fmtlib_proc_macros::rt_format_args!(String::from("string"), "static str", 12, "named": "named arg");
         let fmt = CStr::from_bytes_with_nul(b"test '{}' '{}' '{}' '{named}'\0").unwrap();
         match unsafe { fmt::format(fmt.as_ptr(), args.as_mut_slice()) } {
             Ok(ref v) => {
@@ -58,7 +56,7 @@ mod ffi_tests {
             }
             Err(e) => panic!("error from fmtlib: {e}"),
         }
-        let mut args = fmtlib_proc_macros::format_args!(1, 3, b: 2);
+        let mut args = fmtlib_proc_macros::rt_format_args!(1, 3, b: 2);
         let fmt = CStr::from_bytes_with_nul(b"test '{0}' '{b}' '{1}'\0").unwrap();
         match unsafe { fmt::format(fmt.as_ptr(), args.as_mut_slice()) } {
             Ok(ref v) => {

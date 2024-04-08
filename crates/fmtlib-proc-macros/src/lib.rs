@@ -191,9 +191,9 @@ impl Parse for ArgsMacroInput {
     }
 }
 
-/// Used by the format! macro to create formatting args.
+/// Used by the rt_format! macro to create formatting args.
 #[proc_macro]
-pub fn format_args(input: TokenStream) -> TokenStream {
+pub fn rt_format_args(input: TokenStream) -> TokenStream {
     let parsed = parse_macro_input!(input as ArgsMacroInput);
     let mut out_stream = proc_macro2::TokenStream::new();
     let count = parsed.args.len();
