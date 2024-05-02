@@ -70,13 +70,13 @@ macro_rules! rt_format {
     ($msg:expr, $args:expr) => {unsafe {
         use $crate::fmt::Arg;
         let msg = std::ffi::CString::new($msg).expect("cannot construct format string. invalid byte source");
-        let args = ::fmtlib_proc_macros::rt_format_args!($args);
+        let args = $crate::fmt::rt_format_args!($args);
         $crate::ffi::fmt::format(msg.as_ptr(), args.as_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
     }};
     ($msg:tt, $($args:tt)+) => {unsafe {
         use $crate::fmt::Arg;
         let msg = std::ffi::CString::new($msg).expect("cannot construct format string. invalid byte source");
-        let args = ::fmtlib_proc_macros::rt_format_args!($($args)+);
+        let args = $crate::fmt::rt_format_args!($($args)+);
         $crate::ffi::fmt::format(msg.as_ptr(), args.as_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
     }};
 }
