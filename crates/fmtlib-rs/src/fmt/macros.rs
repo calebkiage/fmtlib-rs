@@ -68,9 +68,9 @@ macro_rules! rt_format {
     ($msg:literal) => {Ok::<_, $crate::fmt::errors::Error>($msg.to_string())};
     ($msg:expr) => {Ok::<_, $crate::fmt::errors::Error>($msg.to_string())};
     ($msg:expr, $args:expr) => {unsafe {
-        use $crate::fmt::Arg;
+        use $crate::fmt::IntoArgs;
         let msg = std::ffi::CString::new($msg).expect("cannot construct format string. invalid byte source");
-        let args = $crate::fmt::rt_format_args!($args);
+        let args = $args.into_args();
         $crate::ffi::fmt::format(msg.as_ptr(), args.as_slice()).map_err(|e| $crate::fmt::errors::Error::FormatFailed(std::format!("{}", e)))
     }};
     ($msg:tt, $($args:tt)+) => {unsafe {
@@ -91,6 +91,10 @@ mod tests {
     fn test_format() {
         let x = rt_format!("test");
         assert_eq!(x.expect("formatting failed"), "test");
+        let x = rt_format!("test {0}", "arg0");
+        assert_eq!(x.expect("formatting failed"), "test arg0");
+        let x = rt_format!("test {a}", a: "arg0");
+        assert_eq!(x.expect("formatting failed"), "test arg0");
         let x = rt_format!("test {0} {named}", "arg0", "named": "named arg" );
         assert_eq!(x.expect("formatting failed"), "test arg0 named arg");
         let x = rt_format!("{a} {a} {b}", a: 12, b: 20 );

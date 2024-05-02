@@ -53,3 +53,43 @@ impl Arg<'_> {
         }
     }
 }
+
+impl<'a, T> From<T> for Arg<'a>
+where
+    T: Into<Value<'a>>,
+{
+    fn from(value: T) -> Self {
+        Arg::Pos(value.into())
+    }
+}
+
+pub trait IntoArgs<'a> {
+    fn into_args(self) -> Vec<super::Arg<'a>>;
+}
+
+impl<'a, T> IntoArgs<'a> for Vec<T>
+where
+    T: Into<super::Arg<'a>>,
+{
+    fn into_args(self) -> Vec<super::Arg<'a>> {
+        self.into_iter().map(|e| e.into()).collect()
+    }
+}
+
+impl<'a, T> IntoArgs<'a> for &'a [T]
+where
+    T: Into<super::Arg<'a>> + Clone,
+{
+    fn into_args(self) -> Vec<super::Arg<'a>> {
+        self.into_iter().map(|e| e.clone().into()).collect()
+    }
+}
+
+impl<'a, T> IntoArgs<'a> for T
+where
+    T: Into<super::Arg<'a>>,
+{
+    fn into_args(self) -> Vec<super::Arg<'a>> {
+        vec![self.into()]
+    }
+}

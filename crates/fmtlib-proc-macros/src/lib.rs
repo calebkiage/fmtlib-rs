@@ -146,7 +146,7 @@ fn expand_value(value: &Expr) -> proc_macro2::TokenStream {
         Expr::Unary(v) => quote_spanned! {v.span() => #v.into()},
         Expr::Unsafe(v) => quote_spanned! {v.span() => #v},
         Expr::Verbatim(v) => {
-            syn::Error::new(v.span(), "array expressions are not supported").to_compile_error()
+            syn::Error::new(v.span(), "verbatim expressions are not supported").to_compile_error()
         }
         Expr::While(v) => syn::Error::new(v.span(), "while loops expressions are not supported")
             .to_compile_error(),

@@ -3,7 +3,6 @@ type Value<'s> = crate::fmt::Value<'s>;
 
 #[cxx::bridge]
 pub mod fmt {
-
     #[namespace = "shimrs"]
     extern "Rust" {
         type Value<'s>;
