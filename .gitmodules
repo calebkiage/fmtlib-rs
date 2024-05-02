@@ -1,3 +1,4 @@
 [submodule "crates/fmtlib-rs/fmtlib-src"]
 	path = crates/fmtlib-rs/fmtlib-src
 	url = https://github.com/fmtlib/fmt
+	shallow = true
