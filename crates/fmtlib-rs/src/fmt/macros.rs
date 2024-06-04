@@ -45,7 +45,13 @@
 /// assert_eq!(result.unwrap(), "12 12 20");
 /// ```
 ///
+/// # Performance
+///
+/// This macro allocates a new string when constructing the format string. The underlying library
+/// also allocates the format arguments.
+///
 /// # Known issues
+///
 /// The underlying C++ library doesn't allow mixing automatic & manual arg
 /// indexing. What this means is that one has to decide whether to use
 /// `{}` or `{<index>}` in a template string. Named arguments are considered
