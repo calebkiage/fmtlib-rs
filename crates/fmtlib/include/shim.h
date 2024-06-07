@@ -2,18 +2,10 @@
 #define FFI_SHIM_INCLUDED
 #include <fmt/args.h>
 #include <fmt/core.h>
-#include <string>
 #include <memory>
 #include "fmtlib/src/ffi.rs.h"
 #include "rust/cxx.h"
 #include <iostream>
-
-namespace rust {
-    std::string format_as(String &&f) { return static_cast<std::string>(f); }
-    ::fmt::string_view format_as(const String &f) { return ::fmt::string_view(f.data(), f.size()); }
-
-    ::fmt::string_view format_as(Str f) { return ::fmt::string_view(f.data(), f.size()); }
-}
 
 namespace shimcpp {
     template<typename CB>
