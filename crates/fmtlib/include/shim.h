@@ -25,6 +25,7 @@ namespace shimcpp {
 
     rust::String format(const char* fmt, rust::Slice<const ::shimrs::Arg> args) {
         ::fmt::dynamic_format_arg_store<::fmt::format_context> store;
+        store.reserve(args.size(), args.size());
         for (auto& a : args) {
             auto &v = a.get_value();
             if (a.is_named()) {
