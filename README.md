@@ -1,6 +1,6 @@
-# Foobar
+# fmtlib
 
-fmtlib-rs is a rust library for interpolating strings.
+fmtlib is a rust library for interpolating strings.
 
 ## License
 

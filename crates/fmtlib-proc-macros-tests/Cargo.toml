@@ -15,5 +15,5 @@ path = "tests/tests.rs"
 
 [dev-dependencies]
 fmtlib-proc-macros = { workspace = true }
-fmtlib-rs = { workspace = true }
+fmtlib = { workspace = true }
 trybuild = { workspace = true, features = ["diff"] }

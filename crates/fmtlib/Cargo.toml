@@ -1,5 +1,5 @@
 [package]
-name = "fmtlib-rs"
+name = "fmtlib"
 version = "0.1.0"
 authors = ["Caleb Kiage <caleb.kiage@gmail.com>"]
 

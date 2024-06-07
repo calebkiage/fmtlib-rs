@@ -1,5 +1,5 @@
 use fmtlib_proc_macros::rt_format_args;
-use fmtlib_rs::fmt::{Arg, Value};
+use fmtlib::fmt::{Arg, Value};
 
 fn string() -> &'static str {
     "fun"

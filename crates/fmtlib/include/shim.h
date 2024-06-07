@@ -4,7 +4,7 @@
 #include <fmt/core.h>
 #include <string>
 #include <memory>
-#include "fmtlib-rs/src/ffi.rs.h"
+#include "fmtlib/src/ffi.rs.h"
 #include "rust/cxx.h"
 #include <iostream>
 

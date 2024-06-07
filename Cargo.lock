@@ -81,6 +81,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "86e3bdc80eee6e16b2b6b0f87fbc98c04bee3455e35174c0de1a125d0688c632"
 
 [[package]]
+name = "fmtlib"
+version = "0.1.0"
+dependencies = [
+ "cxx",
+ "cxx-build",
+ "fmtlib-proc-macros",
+ "quote",
+ "thiserror",
+]
+
+[[package]]
 name = "fmtlib-proc-macros"
 version = "0.1.0"
 dependencies = [
@@ -93,20 +104,9 @@ dependencies = [
 name = "fmtlib-proc-macros-tests"
 version = "0.1.0"
 dependencies = [
+ "fmtlib",
  "fmtlib-proc-macros",
- "fmtlib-rs",
  "trybuild",
-]
-
-[[package]]
-name = "fmtlib-rs"
-version = "0.1.0"
-dependencies = [
- "cxx",
- "cxx-build",
- "fmtlib-proc-macros",
- "quote",
- "thiserror",
 ]
 
 [[package]]

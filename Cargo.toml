@@ -11,7 +11,7 @@ license = "MIT OR Apache-2.0"
 cxx = "1.0"
 cxx-build = "1.0"
 fmtlib-proc-macros = { path = "crates/fmtlib-proc-macros", version = "0.1.0" }
-fmtlib-rs = { path = "crates/fmtlib-rs", version = "0.1.0" }
+fmtlib = { path = "crates/fmtlib", version = "0.1.0" }
 proc-macro2 = "1.0"
 quote = "1.0"
 syn = { version = "2.0", default-features = false }

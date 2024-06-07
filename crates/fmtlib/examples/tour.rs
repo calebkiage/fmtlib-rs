@@ -1,4 +1,4 @@
-use fmtlib_rs::fmt::rt_format;
+use fmtlib::fmt::rt_format;
 
 fn main() {
     let x = rt_format!("hello world").unwrap();

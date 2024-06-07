@@ -31,7 +31,7 @@ pub mod fmt {
 
     #[namespace = "shimcpp"]
     unsafe extern "C++" {
-        include!("fmtlib-rs/include/shim.h");
+        include!("fmtlib/include/shim.h");
 
         /// Format a string using [fmtlib](https://fmt.dev)
         #[allow(dead_code)]

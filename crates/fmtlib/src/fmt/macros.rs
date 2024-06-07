@@ -6,7 +6,7 @@
 ///
 /// # Examples
 /// ```
-/// # use fmtlib_rs::fmt::rt_format;
+/// # use fmtlib::fmt::rt_format;
 ///
 /// // A plain string is printed out as is.
 /// let result = rt_format!("Hello");
@@ -14,7 +14,7 @@
 /// ```
 ///
 ///```
-/// # use fmtlib_rs::fmt::rt_format;
+/// # use fmtlib::fmt::rt_format;
 ///
 /// // An interpolated string.
 /// let result = rt_format!("{} {}", "hello", "world");
@@ -22,7 +22,7 @@
 /// ```
 ///
 /// ```
-/// # use fmtlib_rs::fmt::rt_format;
+/// # use fmtlib::fmt::rt_format;
 ///
 /// // Positional arguments
 /// let result = rt_format!("{0} {0} {1}", 12, 20);
@@ -30,7 +30,7 @@
 /// ```
 ///
 /// ```
-/// # use fmtlib_rs::fmt::rt_format;
+/// # use fmtlib::fmt::rt_format;
 ///
 /// // Named arguments
 /// let result = rt_format!("{a} {a} {b}", a: 12, b: 20);
@@ -38,7 +38,7 @@
 /// ```
 ///
 /// ```
-/// # use fmtlib_rs::fmt::rt_format;
+/// # use fmtlib::fmt::rt_format;
 ///
 /// // Named and positional
 /// let result = rt_format!("{0} {0} {b}", 12, b: 20);
